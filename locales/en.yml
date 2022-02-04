@@ -5,6 +5,9 @@ button:
   home: Home
   toggle_dark: Toggle dark mode
   toggle_langs: Change languages
+coin:
+  input:
+    placeholder: 689...
 intro:
   desc: Chinese Philosophy of Change (Yi-Jing)
   dynamic-route: Demo of dynamic route

@@ -5,6 +5,9 @@ button:
   home: Accueil
   toggle_dark: Basculer en mode sombre
   toggle_langs: Changer de langue
+coin:
+  input:
+    placeholder: 689...
 intro:
   desc: Philosophie chinoise du changement (Yijing)
   dynamic-route: Démo de route dynamique
