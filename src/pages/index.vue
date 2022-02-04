@@ -15,7 +15,7 @@ export default defineComponent({
   setup() {
     const user = useUserStore()
     const name = ref(user.savedName)
-    const { lines, addLine, hexagrams } = useHexagrams()
+    const { lines, addLine, hexagrams, trigrams } = useHexagrams()
     const updateLines = ({ score, index }: { score: number; index: number }) => {
       addLine(score, index)
     }
@@ -26,7 +26,7 @@ export default defineComponent({
     }
 
     const { t } = useI18n()
-    return { t, name, go, lines, addLine, updateLines, hexagrams }
+    return { t, name, go, lines, addLine, updateLines, hexagrams, trigrams }
   },
 })
 </script>
@@ -34,35 +34,47 @@ export default defineComponent({
 <template>
   <div>
     <p class="text-4xl">
-      <icon-park-outline-chinese class="inline-block" />
+      <icon-park-outline-chinese class="inline-block text-red-800" />
     </p>
     <p>Yi-Jing</p>
     <p>
       <em class="text-sm opacity-75">{{ t('intro.desc') }}</em>
     </p>
 
-    <div class="flex flex-col md:flex-row">
-      <div class="h-80 w-90 md:w-100 mb-8">
-        <Hexagram :lines="lines" />
+    <div class="flex flex-col">
+      <div class="my-10 w-30 h-30 flex mx-auto">
+        <Hexagram :lines="lines"  />
       </div>
-      <div class="md:flex-grow md:ml-6">
-        <div
-          class=" w-full flex flex-col md:flex-row justify-center items-center md:items-start p-6">
+
+      <div class="md:ml-6">
+        <div class="w-full flex flex-col md:flex-row justify-center items-center md:items-start p-6">
           <CoinsInput v-for="(line, i) in lines" :key="i" :line="line" :index="i" @onChange="updateLines" />
         </div>
-        <div v-if="hexagrams.situation" class="flex flex-col  justify-center items-center py-6">
+        <div v-if="hexagrams.situation" class="flex flex-col justify-center items-center py-6">
           <p class="text-xs dark:text-gray-200 text-center mb-2">Hexagramme de situation :</p>
-          <h1 class="text-4xl">{{ hexagrams.situation.chineseName }}</h1>
+          <h1 class="text-4xl">{{ hexagrams.situation.chineseName }} {{ hexagrams.situation.pinyinName }}</h1>
           <h1 class="text-2xl dark:text-gray-400">
-            {{ hexagrams.situation.pinyinName }}, num {{ hexagrams.situation.number }}
+            {{ t(`hexagrams.desc.${hexagrams.situation.number}`) }}
           </h1>
+          <h3 class="text-lg">{{ hexagrams.situation.number }}</h3>
         </div>
         <div v-if="hexagrams.opposite" class="flex flex-col justify-center items-center py-6">
           <p class="text-xs dark:text-gray-200 text-center mb-2">Hexagramme opposé :</p>
-          <h1 class="text-4xl">{{ hexagrams.opposite.chineseName }}</h1>
+          <h1 class="text-4xl">{{ hexagrams.opposite.chineseName }} {{ hexagrams.opposite.pinyinName }}</h1>
           <h1 class="text-2xl dark:text-gray-400">
-            {{ hexagrams.opposite.pinyinName }}, num {{ hexagrams.opposite.number }}
+            {{ t(`hexagrams.desc.${hexagrams.opposite.number}`) }}
           </h1>
+          <h3 class="text-lg">{{ hexagrams.opposite.number }}</h3>
+        </div>
+        <div v-if="trigrams.top && trigrams.bottom" class="flex flex-col md:flex-row">
+          <div v-for="type in ['top', 'bottom']" class="w-full md:w-1/2">
+            <h4 class="text-lg font-bold">{{ t(`trigrams.${type}.name`) }}</h4>
+            <p>{{ trigrams[type].pinyinName }} - {{ trigrams[type].chineseName }}</p>
+            <p>( {{ trigrams[type].number }} )</p>
+            <span class="p-6 block text-justify dark:text-gray-400">{{
+              t(`trigrams.desc.${trigrams[type].number}`)
+            }}</span>
+          </div>
         </div>
       </div>
     </div>

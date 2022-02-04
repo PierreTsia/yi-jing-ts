@@ -20,7 +20,7 @@ export default defineComponent({
 })
 </script>
 <template>
-  <div class="w-full h-full grid grid-cols-1 gap-y-4">
+  <div class="w-full h-full grid grid-cols-1 gap-y-1">
     <Stroke v-for="(line, i) in reversedLines" :key="i" :line="line" />
   </div>
 </template>

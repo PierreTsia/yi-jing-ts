@@ -12,3 +12,86 @@ intro:
   aka: Aussi connu sous le nom de
   whats-your-name: Comment t'appelles-tu ?
 not-found: Page non trouvée
+trigrams:
+  top:
+    name: Trigramme supérieur
+    desc: (attitude envers l'extérieur du consultant)
+  bottom:
+    name: Trigramme inférieur
+    desc: (dispo. intérieure du consultant)
+  desc:
+    1: QUIAN, le Ciel. Son mouvement va directement vers le haut où il prend toute sa place. C’est une force centrifuge mais centrée sur son nombril. Qian a le pouvoir de la décision projective. Il avance sans regarder à droite ni à gauche.
+    2: KUN, la Terre. Elle a le mouvement descendant de la pesanteur. Elle descend et s’étale. Sa nature étant d’accepter, de suivre, de recevoir, elle est capable de retenir sous elle (comme une mère peut étouffer son enfant) mais pas de façon durable.
+    3: ZHEN, le Tonnerre. C’est le mouvement pur, violent, soudain et ascendant. Il entraine avec lui plutôt qu’il ne modifie. Il peut être modéré ou adouci par un autre trigramme comme Xun (le vent/bois-racine)
+    4: KAN, la Ravine/l’Eau. Le mouvement de l’eau s’écoule toujours vers le bas. Kan dépasse ou « passe à travers » les obstacles par usure ou répétition
+    5: >
+      GEN, la Montagne. C’est une erreur de dire que c’est l’arrêt de tout mouvement. C’est plutôt l’arrêt des variations : la stabilisation. Cette force de cohésion se dirige vers le bas.
+    6: XUN, le Vent/Bois-Racine. Son mouvement est celui de la pénétration souple et de la diffusion. Il est généralement considéré comme légèrement descendant. Selon l’autre trigramme associé il peut être un frein, avoir une action dissolutive ou unificatrice.
+    7: LI, la Lumière. Son mouvement s’élève comme celui d’un feu éclairant. Mais comme le feu, il reste attaché à son combustible, Li ne peut s’éloigner ni vraiment se déplacer.
+    8: DUI, la Brume. Elle possède un mouvement légèrement ascendant. C’est l’image de l’évaporation. Son déplacement est faible et n’entre jamais en concurrence avec d’autres. Soit il entre en joyeuse communication, soit il risque d’être entrainé ou de se transformer en hésitation.
+hexagrams:
+  desc:
+    1: ELAN CREATIF - mai/juin
+    2: ELAN RECEPTIF - nov./déc
+    3: DIFFICULTES INITIALES
+    4: JEUNE FOU
+    5: ATTENDRE
+    6: PLAIDER SA CAUSE
+    7: ARMEE
+    8: ALLIANCE
+    9: PETIT APPRIVOISE
+    10: DEMARCHE
+    11: PROSPERITE (Fluidité printanière) - fév./mars
+    12: ADVERSITE (Blocage automnal) - août/sept.
+    13: S'ENTENDRE AVEC TOUS
+    14: GRAND REALISE
+    15: SE TENIR
+    16: S'ENTHOUSIASMER
+    17: SUIVRE
+    18: REMEDIER AU CORROMPU
+    19: APPROCHER - janv./fév.
+    20: REGARDER - sept./oct.
+    21: MORDRE ET UNIR
+    22: EMBELLIR
+    23: USURE - oct./nov.
+    24: RETOUR - déc./janv.
+    25: SPONTANEMENT
+    26: GRAND APPRIVOISE
+    27: NOURRIR
+    28: GRAND EXCES
+    29: S'ENTRAINER AU PASSAGE DES RAVINS
+    30: FILET D'OISELEUR (Lumière)
+    31: INCITER
+    32: ENDURER (Constance)
+    33: FAIRE RETRAITE - juil./août
+    34: GRAND FORCE - mars/avril
+    35: AVANCER AU GRAND JOUR
+    36: LUMIERE OBSCURCIE (Oiseau blessé)
+    37: GENS DU CLAN
+    38: DIVERGENCE
+    39: OBSTRUCTION
+    40: DELIVRANCE
+    41: DIMINUER
+    42: AUGMENTER
+    43: SE MONTRER RESOLU - avril./mai
+    44: ETRE ACCUEILLANT - juin/juillet
+    45: REUNION
+    46: CROISSANCE
+    47: EPUISEMENT
+    48: PUITS
+    49: REVOLUTION (Renouveler)
+    50: CHAUDRON
+    51: EBRANLER
+    52: STABILISER
+    53: PROGRESSER PAS A PAS
+    54: MARIAGE DE LA CADETTE
+    55: ABONDANCE
+    56: VOYAGEUR
+    57: SE MODELER
+    58: ECHANGER
+    59: DENOUER
+    60: MESURE
+    61: JUSTE CONFIANCE
+    62: PETIT EXCES
+    63: DÉJÀ TRAVERSEE
+    64: PAS ENCORE TRAVERSEE
