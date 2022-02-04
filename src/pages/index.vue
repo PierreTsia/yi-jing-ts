@@ -1,10 +1,10 @@
 <script lang="ts">
-import { ref, defineComponent, computed, watch } from 'vue'
+import { ref, defineComponent } from 'vue'
 import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { useUserStore } from '~/stores/user'
 import Hexagram from '~/components/Hexagram.vue'
-import { useHexagrams } from '~/composables/hexagrams'
+import { useHexagrams, useDraw } from '~/composables'
 
 export default defineComponent({
   components: {
@@ -13,29 +13,10 @@ export default defineComponent({
   setup() {
     const user = useUserStore()
     const name = ref(user.savedName)
-    const draw = ref(null)
-    const drawNumbersArray = computed(() => [...`${draw.value}`].map(Number))
-    const { lines, addLine, hexagrams, trigrams, start } = useHexagrams()
+    const { draw, isValid, isTooLong, isAllValidNumbers, isFullLength } = useDraw()
 
-    watch(
-      () => drawNumbersArray.value,
-      (newVal) => {
-        if (isAllValidNumbers.value && drawNumbersArray.value.length <= 6) {
-          newVal.forEach((number, i) => {
-            addLine(number, i)
-          })
-          if (isValid.value) {
-            start()
-          }
-        }
-      },
-      { deep: true }
-    )
+    const { lines, addLine, hexagrams, trigrams } = useHexagrams()
 
-    const isValid = computed(() => isFullLength.value && isAllValidNumbers.value)
-    const isFullLength = computed(() => drawNumbersArray.value.length === 6)
-    const isTooLong = computed(() => drawNumbersArray.value.length > 6)
-    const isAllValidNumbers = computed(() => drawNumbersArray.value.every((n) => n >= 6 && n <= 9))
     const router = useRouter()
     const go = () => {
       if (name.value) router.push(`/hi/${encodeURIComponent(name.value)}`)
@@ -80,7 +61,6 @@ export default defineComponent({
           <div class="w-full md:w-1/2 md:mx-auto">
             <input
               v-model="draw"
-              maxlength="6"
               class="inputCoin"
               :class="{
                 'border-red-500': isTooLong || (draw && !isAllValidNumbers) || (isFullLength && !isValid),
