@@ -89,7 +89,7 @@ export default defineComponent({
           <h3 class="text-lg">{{ hexagrams.opposite.number }}</h3>
         </div>
         <div v-if="trigrams.top && trigrams.bottom" class="flex flex-col md:flex-row">
-          <div v-for="type in ['top', 'bottom']" class="w-full md:w-1/2">
+          <div v-for="type in ['top', 'bottom']" :key="type" class="w-full md:w-1/2">
             <h4 class="text-lg font-bold">{{ t(`trigrams.${type}.name`) }}</h4>
             <p>{{ trigrams[type].pinyinName }} - {{ trigrams[type].chineseName }}</p>
             <p>( {{ trigrams[type].number }} )</p>
