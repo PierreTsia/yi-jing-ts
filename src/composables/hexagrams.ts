@@ -1,6 +1,13 @@
-import { reactive, toRefs } from 'vue'
+import { reactive, toRefs, computed } from 'vue'
 import { YiJing } from '~/core/YiJing'
 import { HexagramRecord, TrigramRecord } from '~/types/index.type'
+
+enum EnvelopValue {
+  Spring = 'spring',
+  Summer = 'summer',
+  Autumn = 'autumn',
+  Winter = 'winter',
+}
 
 type HexagramState = {
   lines: number[]
@@ -27,6 +34,21 @@ export const useHexagrams = () => {
     state.lines[index] = value
   }
 
+  const envelop = computed(() => {
+    if (!state.hexagrams.situation) return null
+    const [bottom, top] = [state.hexagrams.situation.lines[0], state.hexagrams.situation.lines[5]]
+    let result
+    switch (bottom) {
+      case 1:
+        result = top === 0 ? EnvelopValue.Spring : EnvelopValue.Summer
+        break
+      case 0:
+        result = top === 0 ? EnvelopValue.Winter : EnvelopValue.Autumn
+        break
+    }
+    return result
+  })
+
   const start = () => {
     const yijing = new YiJing(state.lines)
     state.hexagrams = { situation: yijing.hexagrams.situation, opposite: yijing.hexagrams.opposite }
@@ -36,6 +58,7 @@ export const useHexagrams = () => {
   return {
     addLine,
     start,
+    envelop,
     ...toRefs(state),
   }
 }

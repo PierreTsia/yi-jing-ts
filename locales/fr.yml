@@ -8,6 +8,18 @@ button:
 coin:
   input:
     placeholder: 689...
+envelop:
+  title: Enveloppe
+  desc: (dynamique externe de la situation)
+  values:
+    summer: >
+      Été : l’effet d'une action entreprise maintenant sera flagrant et de grande ampleur.
+    winter: >
+      Hiver  : les effets d'une action entreprise maintenant ne sont pas (ou peu) visibles. Il faut tenir.
+    spring: >
+      Printemps  : les effets des actions entreprises maintenant tendent à être rapides, voire immédiates.
+    autumn: >
+      Automne : les effets d'une action entreprise maintenant apparaîtront plus tard, au printemps.
 intro:
   desc: Philosophie chinoise du changement (Yijing)
   dynamic-route: Démo de route dynamique

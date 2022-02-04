@@ -15,7 +15,7 @@ export default defineComponent({
     const name = ref(user.savedName)
     const { draw, isValid, isTooLong, isAllValidNumbers, isFullLength } = useDraw()
 
-    const { lines, addLine, hexagrams, trigrams } = useHexagrams()
+    const { lines, addLine, hexagrams, trigrams, envelop } = useHexagrams()
 
     const router = useRouter()
     const go = () => {
@@ -36,6 +36,7 @@ export default defineComponent({
       isFullLength,
       isAllValidNumbers,
       isTooLong,
+      envelop,
     }
   },
 })
@@ -96,6 +97,11 @@ export default defineComponent({
               t(`trigrams.desc.${trigrams[type].number}`)
             }}</span>
           </div>
+        </div>
+        <div v-if="hexagrams.situation" class="flex flex-col">
+          <h4 class="text-lg text-center font-bold w-full mt-6 px-4">{{ t(`envelop.title`) }}</h4>
+          <h4 class="text-md dark:text-gray-400">{{ t(`envelop.desc`) }}</h4>
+          <span class="p-6 block text-justify dark:text-gray-400">{{ t(`envelop.values.${envelop}`) }}</span>
         </div>
       </div>
     </div>
