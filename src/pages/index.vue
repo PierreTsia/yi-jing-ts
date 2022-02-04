@@ -17,6 +17,8 @@ export default defineComponent({
 
     const { lines, addLine, hexagrams, trigrams, envelop } = useHexagrams()
 
+    const types = ['top', 'bottom'] as Array<'top' | 'bottom'>
+
     const router = useRouter()
     const go = () => {
       if (name.value) router.push(`/hi/${encodeURIComponent(name.value)}`)
@@ -37,6 +39,7 @@ export default defineComponent({
       isAllValidNumbers,
       isTooLong,
       envelop,
+      types,
     }
   },
 })
@@ -89,12 +92,12 @@ export default defineComponent({
           <h3 class="text-lg">{{ hexagrams.opposite.number }}</h3>
         </div>
         <div v-if="trigrams.top && trigrams.bottom" class="flex flex-col md:flex-row">
-          <div v-for="type in ['top', 'bottom']" :key="type" class="w-full md:w-1/2">
+          <div v-for="type in types" :key="type" class="w-full md:w-1/2">
             <h4 class="text-lg font-bold">{{ t(`trigrams.${type}.name`) }}</h4>
-            <p>{{ trigrams[type].pinyinName }} - {{ trigrams[type].chineseName }}</p>
-            <p>( {{ trigrams[type].number }} )</p>
+            <p>{{ trigrams[type]?.pinyinName }} - {{ trigrams[type]?.chineseName }}</p>
+            <p>( {{ trigrams[type]?.number }} )</p>
             <span class="p-6 block text-justify dark:text-gray-400">{{
-              t(`trigrams.desc.${trigrams[type].number}`)
+              t(`trigrams.desc.${trigrams[type]?.number}`)
             }}</span>
           </div>
         </div>

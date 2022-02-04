@@ -14,7 +14,7 @@ export default defineComponent({
     },
   },
   setup(props) {
-    const reversedLines = computed(() => [...props.lines].reverse())
+    const reversedLines = computed(() => [...(props.lines as number[])].reverse())
     return { reversedLines }
   },
 })
