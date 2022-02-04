@@ -1,12 +1,10 @@
 <script lang="ts">
-import { ref, defineComponent, computed } from 'vue'
+import { ref, defineComponent, computed, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { useUserStore } from '~/stores/user'
 import Hexagram from '~/components/Hexagram.vue'
 import { useHexagrams } from '~/composables/hexagrams'
-
-type Args = { score: number; index: number }
 
 export default defineComponent({
   components: {
@@ -17,23 +15,26 @@ export default defineComponent({
     const name = ref(user.savedName)
     const draw = ref(null)
     const drawNumbersArray = computed(() => [...`${draw.value}`].map(Number))
-    const { lines, addLine, hexagrams, trigrams } = useHexagrams()
-    const updateLines = ({ score, index }: Args) => {
-      addLine(score, index)
-    }
+    const { lines, addLine, hexagrams, trigrams, start } = useHexagrams()
 
     watch(
       () => drawNumbersArray.value,
-      () => {
-        if (isAllValidNumbers.value) {
-          const lastIndex = drawNumbersArray.value.length - 1
-          addLine(drawNumbersArray.value[lastIndex], lastIndex)
+      (newVal) => {
+        if (isAllValidNumbers.value && drawNumbersArray.value.length <= 6) {
+          newVal.forEach((number, i) => {
+            addLine(number, i)
+          })
+          if (isValid.value) {
+            start()
+          }
         }
-      }
+      },
+      { deep: true }
     )
 
     const isValid = computed(() => isFullLength.value && isAllValidNumbers.value)
     const isFullLength = computed(() => drawNumbersArray.value.length === 6)
+    const isTooLong = computed(() => drawNumbersArray.value.length > 6)
     const isAllValidNumbers = computed(() => drawNumbersArray.value.every((n) => n >= 6 && n <= 9))
     const router = useRouter()
     const go = () => {
@@ -47,13 +48,13 @@ export default defineComponent({
       go,
       lines,
       addLine,
-      updateLines,
       hexagrams,
       trigrams,
       draw,
       isValid,
       isFullLength,
       isAllValidNumbers,
+      isTooLong,
     }
   },
 })
@@ -79,9 +80,10 @@ export default defineComponent({
           <div class="w-full md:w-1/2 md:mx-auto">
             <input
               v-model="draw"
-              class="border-2 border-primary transition h-12 px-5 pr-16 rounded-md focus:outline-none w-full text-black text-lg"
+              maxlength="6"
+              class="inputCoin"
               :class="{
-                'border-red-500': (draw && !isAllValidNumbers) || (isFullLength && !isValid),
+                'border-red-500': isTooLong || (draw && !isAllValidNumbers) || (isFullLength && !isValid),
                 'border-green-500': isValid,
               }"
               type="number"
@@ -126,6 +128,10 @@ meta:
 </route>
 
 <style scoped>
+.inputCoin {
+  @apply border-2 border-primary transition h-12 px-5 pr-16 rounded-md focus:outline-none w-full text-black text-lg;
+}
+
 input[type='number']::-webkit-inner-spin-button,
 input[type='number']::-webkit-outer-spin-button {
   -webkit-appearance: none;

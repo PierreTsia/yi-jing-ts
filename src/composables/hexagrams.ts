@@ -1,4 +1,4 @@
-import { Ref, ref, watch } from 'vue'
+import { Ref, ref } from 'vue'
 import { YiJing } from '~/core/YiJing'
 import { HexagramRecord, TrigramRecord } from '~/types/index.type'
 
@@ -23,15 +23,6 @@ export const useHexagrams = () => {
     trigrams.value = { top: yijing.trigrams[1], bottom: yijing.trigrams[0] }
   }
 
-  watch(
-    () => lines.value,
-    (value) => {
-      if (value.every((n) => n >= 6 && n <= 9)) {
-        start()
-      }
-    },
-    { deep: true }
-  )
   return {
     lines,
     addLine,
