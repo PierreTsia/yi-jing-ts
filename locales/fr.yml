@@ -6,7 +6,7 @@ button:
   toggle_dark: Basculer en mode sombre
   toggle_langs: Changer de langue
 intro:
-  desc: Exemple d'application Vite
+  desc: Philosophie chinoise du changement (Yijing)
   dynamic-route: Démo de route dynamique
   hi: Salut, {name}!
   aka: Aussi connu sous le nom de

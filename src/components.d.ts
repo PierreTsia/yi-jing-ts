@@ -11,8 +11,12 @@ declare module 'vue' {
     CarbonMoon: typeof import('~icons/carbon/moon')['default']
     CarbonSun: typeof import('~icons/carbon/sun')['default']
     CarbonWarning: typeof import('~icons/carbon/warning')['default']
+    CoinsInput: typeof import('./components/CoinsInput.vue')['default']
     Footer: typeof import('./components/Footer.vue')['default']
+    Hexagram: typeof import('./components/Hexagram.vue')['default']
+    IconParkOutlineChinese: typeof import('~icons/icon-park-outline/chinese')['default']
     README: typeof import('./components/README.md')['default']
+    Stroke: typeof import('./components/Stroke.vue')['default']
   }
 }
 

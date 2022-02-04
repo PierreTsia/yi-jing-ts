@@ -1,13 +1,19 @@
-<script setup lang="ts">
+<script lang="ts">
+import { defineComponent } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { toggleDark, isDark } from '~/composables'
 
-const { t, availableLocales, locale } = useI18n()
+export default defineComponent({
+  setup() {
+    const { t, availableLocales, locale } = useI18n()
+    const toggleLocales = () => {
+      const locales = availableLocales
+      locale.value = locales[(locales.indexOf(locale.value) + 1) % locales.length]
+    }
 
-const toggleLocales = () => {
-  // change to some real logic
-  const locales = availableLocales
-  locale.value = locales[(locales.indexOf(locale.value) + 1) % locales.length]
-}
+    return { t, availableLocales, locale, toggleLocales, toggleDark, isDark }
+  },
+})
 </script>
 
 <template>
