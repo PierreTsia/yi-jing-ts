@@ -4,14 +4,18 @@ import { Envelop, HexagramRecord, TrigramRecord } from '~/types/index.type'
 
 const ALLOWED_VALUES = [6, 7, 8, 9]
 
+type Hexagrams = { situation: HexagramRecord | null; opposite: HexagramRecord | null; nucleus: HexagramRecord | null }
+
 export class YiJing {
   draw: number[] = []
   strokes: Stroke[] = []
   trigrams: TrigramRecord[] = []
-  mutatingTrigrams: TrigramRecord[] = []
-  hexagrams: { situation: HexagramRecord | null; opposite: HexagramRecord | null } = {
+  oppositeTrigrams: TrigramRecord[] = []
+  nucleusTrigrams: TrigramRecord[] = []
+  hexagrams: Hexagrams = {
     situation: null,
     opposite: null,
+    nucleus: null,
   }
 
   constructor(rolls?: number[]) {
@@ -39,10 +43,12 @@ export class YiJing {
     this.draw = []
     this.strokes = []
     this.trigrams = []
-    this.mutatingTrigrams = []
+    this.oppositeTrigrams = []
+    this.nucleusTrigrams = []
     this.hexagrams = {
       situation: null,
       opposite: null,
+      nucleus: null,
     }
   }
 
@@ -57,10 +63,14 @@ export class YiJing {
   }
 
   private assignTrigrams(): void {
-    const situationalTrigrams = this.getRawTrigrams()
-    this.trigrams = situationalTrigrams.map((tg) => this.findTrigram(tg))
-    const mutatedTrigrams = this.getRawTrigrams('mutate')
-    this.mutatingTrigrams = mutatedTrigrams.map((tg) => this.findTrigram(tg))
+    const situationalTrigramString = this.getRawTrigrams()
+    this.trigrams = situationalTrigramString.map((tg) => this.findTrigram(tg))
+
+    const oppositeTrigramsString = this.getRawTrigrams('opposite')
+    this.oppositeTrigrams = oppositeTrigramsString.map((tg) => this.findTrigram(tg))
+
+    const nucleusTrigramString = this.getRawTrigrams('nucleus')
+    this.nucleusTrigrams = nucleusTrigramString.map((tg) => this.findTrigram(tg))
   }
 
   private findTrigram(tg: string): TrigramRecord {
@@ -74,9 +84,9 @@ export class YiJing {
   }
 
   private findHexagrams(): void {
-    const verbs: Array<'situation' | 'opposite'> = ['situation', 'opposite']
+    const verbs: Array<'situation' | 'opposite' | 'nucleus'> = ['situation', 'opposite', 'nucleus']
 
-    const [situation, opposite] = verbs.map((type) => this.getHexagram(type))
+    const [situation, opposite, nucleus] = verbs.map((type) => this.getHexagram(type))
 
     if (!situation) {
       throw new Error('No situational hexagram found')
@@ -84,11 +94,21 @@ export class YiJing {
     if (!opposite) {
       throw new Error('No mutating hexagram found')
     }
-    this.hexagrams = { situation, opposite }
+    if (!nucleus) {
+      throw new Error('No nucleus hexagram found')
+    }
+    this.hexagrams = { situation, opposite, nucleus }
   }
 
-  getHexagram(param: 'situation' | 'opposite'): HexagramRecord {
-    const trigrams = param === 'situation' ? this.trigrams : this.mutatingTrigrams
+  getHexagram(param: 'situation' | 'opposite' | 'nucleus'): HexagramRecord {
+    let trigrams: TrigramRecord[] = [...this.trigrams]
+    if (param === 'nucleus') {
+      trigrams = [...this.nucleusTrigrams]
+    }
+    if (param === 'opposite') {
+      trigrams = [...this.oppositeTrigrams]
+    }
+
     const h = HEXAGRAMS.find(
       (h: HexagramRecord) => h.bottomTrigram === trigrams[0].number && h.topTrigram === trigrams[1].number
     )
@@ -98,12 +118,55 @@ export class YiJing {
     return h
   }
 
-  private getRawTrigrams(type: 'default' | 'mutate' = 'default'): string[] {
+  private getRawTrigrams(type: 'default' | 'opposite' | 'nucleus' = 'default'): string[] {
+    let trigramString: string[] = []
+    switch (type) {
+      case 'nucleus':
+        trigramString = this.createNucleusTrigrams()
+        break
+      default:
+        trigramString = this.reverseBinaries(type)
+        break
+    }
+    return trigramString
+  }
+
+  createNucleusTrigrams(): string[] {
+    return this.strokes
+      .reduce(
+        ([bottom, top], stroke, index) => {
+          switch (index) {
+            case 1:
+              bottom[0] = `${stroke.binary}`
+              break
+            case 2:
+              bottom[1] = `${stroke.binary}`
+              top[0] = `${stroke.binary}`
+              break
+            case 3:
+              bottom[2] = `${stroke.binary}`
+              top[1] = `${stroke.binary}`
+              break
+            case 4:
+              top[2] = `${stroke.binary}`
+              break
+          }
+          return [bottom, top]
+        },
+        [
+          ['', '', ''],
+          ['', '', ''],
+        ]
+      )
+      .map((trigram) => trigram.join(''))
+  }
+
+  private reverseBinaries(type: 'default' | 'opposite' | 'nucleus') {
     let prop: 'binary' | 'oppositeBinary' = 'binary'
     return this.strokes.reduce(
       (acc, s, i) => {
         const index = i <= 2 ? 0 : 1
-        if (type === 'mutate' && s.isMutating) {
+        if (type === 'opposite') {
           prop = 'oppositeBinary'
         }
         acc[index] += s[prop]

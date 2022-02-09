@@ -4,7 +4,7 @@ import { Envelop, HexagramRecord, TrigramRecord } from '~/types/index.type'
 
 type HexagramState = {
   lines: number[]
-  hexagrams: { situation: HexagramRecord | null; opposite: HexagramRecord | null }
+  hexagrams: { situation: HexagramRecord | null; opposite: HexagramRecord | null; nucleus: HexagramRecord | null }
   trigrams: {
     top: TrigramRecord | null
     bottom: TrigramRecord | null
@@ -16,6 +16,7 @@ const state: HexagramState = reactive({
   hexagrams: {
     situation: null,
     opposite: null,
+    nucleus: null,
   },
   trigrams: {
     top: null,
@@ -31,7 +32,11 @@ export const useHexagrams = () => {
 
   const start = () => {
     const yijing = new YiJing(state.lines)
-    state.hexagrams = { situation: yijing.hexagrams.situation, opposite: yijing.hexagrams.opposite }
+    state.hexagrams = {
+      situation: yijing.hexagrams.situation,
+      opposite: yijing.hexagrams.opposite,
+      nucleus: yijing.hexagrams.nucleus,
+    }
     state.trigrams = { top: yijing.trigrams[1], bottom: yijing.trigrams[0] }
     state.envelop = yijing.envelop
   }

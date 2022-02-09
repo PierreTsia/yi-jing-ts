@@ -17,7 +17,7 @@ export default defineComponent({
 
     const { lines, addLine, hexagrams, trigrams, envelop } = useHexagrams()
 
-    const types = ['top', 'bottom'] as Array<'top' | 'bottom'>
+    const types = ['top', 'bottom']
 
     const router = useRouter()
     const go = () => {
@@ -90,6 +90,15 @@ export default defineComponent({
             {{ t(`hexagrams.desc.${hexagrams.opposite.number}`) }}
           </h1>
           <h3 class="text-lg">{{ hexagrams.opposite.number }}</h3>
+        </div>
+
+        <div v-if="hexagrams.nucleus" class="flex flex-col justify-center items-center py-6">
+          <p class="text-xs dark:text-gray-200 text-center mb-2">Hexagramme nucléaire :</p>
+          <h1 class="text-4xl">{{ hexagrams.nucleus.chineseName }} {{ hexagrams.nucleus.pinyinName }}</h1>
+          <h1 class="text-2xl dark:text-gray-400">
+            {{ t(`hexagrams.desc.${hexagrams.nucleus.number}`) }}
+          </h1>
+          <h3 class="text-lg">{{ hexagrams.nucleus.number }}</h3>
         </div>
         <div v-if="trigrams.top && trigrams.bottom" class="flex flex-col md:flex-row">
           <div v-for="type in types" :key="type" class="w-full md:w-1/2">

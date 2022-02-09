@@ -1,6 +1,7 @@
 import { YiJing } from '~/core/YiJing'
 import { Stroke } from '~/core/stroke'
 import { Envelop } from '~/types/index.type'
+import { describe } from 'vitest'
 
 describe('|-> Yi Jing class', () => {
   it('should be instantiated with correct params types and length', () => {
@@ -11,7 +12,6 @@ describe('|-> Yi Jing class', () => {
   it('should only accept 6, 7, 8 or, 9', () => {
     expect(() => new YiJing([6, 1, 7, 9, 8, 0])).toThrow()
   })
-
   it('should convert rolls to strokes', () => {
     const y = new YiJing([6, 7, 7, 9, 8, 9])
     expect(y.strokes).toBeDefined()
@@ -19,41 +19,51 @@ describe('|-> Yi Jing class', () => {
       expect(s).toBeInstanceOf(Stroke)
     })
   })
-
   it("should get trigrams from the 'strokes' property", () => {
     const y = new YiJing([6, 8, 8, 9, 8, 9])
     expect(y.trigrams).toBeDefined()
     expect(y.trigrams.length).toBe(2)
   })
 
-  it('should get the correct trigrams', () => {
-    const y = new YiJing([6, 8, 8, 9, 8, 9])
-    expect(y.trigrams[0].number).toEqual(2)
-    expect(y.trigrams[1].number).toEqual(7)
+  describe('|->Trigrams', () => {
+    it('should get the correct trigrams', () => {
+      const y = new YiJing([6, 8, 8, 9, 8, 9])
+      expect(y.trigrams[0].number).toEqual(2)
+      expect(y.trigrams[1].number).toEqual(7)
 
-    const y2 = new YiJing([8, 9, 8, 6, 6, 6])
-    expect(y2.trigrams[0].number).toEqual(4)
-    expect(y2.trigrams[1].number).toEqual(2)
-  })
-
-  const hexaFindTestCases: [number[], number, number][] = [
-    [[6, 8, 8, 9, 8, 9], 35, 5],
-    [[9, 9, 9, 9, 9, 9], 1, 2],
-    [[6, 6, 6, 6, 6, 6], 2, 1],
-    [[6, 7, 7, 6, 9, 6], 48, 21],
-  ]
-
-  it('should get situational and opposite trigrams', () => {
-    hexaFindTestCases.forEach(([rolls, expectedSituation, expectedOpposite]) => {
-      const y = new YiJing(rolls)
-      expect(y.hexagrams.situation?.number).toEqual(expectedSituation)
-      expect(y.hexagrams.opposite?.number).toEqual(expectedOpposite)
-      // 💡 hexagrams binary are lines.reverse()
-      expect(y.hexagrams.situation?.binary).toEqual(`${y.trigrams[1].binary}${y.trigrams[0].binary}`)
+      const y2 = new YiJing([8, 9, 8, 6, 6, 6])
+      expect(y2.trigrams[0].number).toEqual(4)
+      expect(y2.trigrams[1].number).toEqual(2)
     })
   })
+  describe('|-> Hexagrams', () => {
+    const hexaFindTestCases: [number[], number, number][] = [
+      [[6, 8, 8, 9, 8, 9], 35, 5],
+      [[9, 9, 9, 9, 9, 9], 1, 2],
+      [[6, 6, 6, 6, 6, 6], 2, 1],
+      [[6, 7, 7, 6, 9, 6], 48, 21],
+      [[8, 9, 9, 8, 7, 8], 48, 21],
+    ]
 
-  describe('Envelop', () => {
+    it('should get situational and opposite hexagrames', () => {
+      hexaFindTestCases.forEach(([rolls, expectedSituation, expectedOpposite]) => {
+        const y = new YiJing(rolls)
+        expect(y.hexagrams.situation?.number).toEqual(expectedSituation)
+        expect(y.hexagrams.opposite?.number).toEqual(expectedOpposite)
+        // 💡 hexagrams binary are lines.reverse()
+        expect(y.hexagrams.situation?.binary).toEqual(`${y.trigrams[1].binary}${y.trigrams[0].binary}`)
+      })
+    })
+  })
+  describe('|-> Nucleus Hexagram', () => {
+    it('should have a nucleus hexagram', () => {
+      const y = new YiJing([7, 6, 9, 8, 8, 6])
+      expect(y.hexagrams.nucleus).toBeDefined()
+      expect(y.hexagrams.situation?.number).toEqual(36)
+      expect(y.hexagrams.nucleus?.number).toEqual(40)
+    })
+  })
+  describe('|-> Envelop', () => {
     it('should have an envelop property', () => {
       const y = new YiJing([6, 7, 7, 9, 8, 9])
       expect(y.envelop).toBeDefined()
@@ -94,7 +104,7 @@ describe('|-> Yi Jing class', () => {
   })
 })
 
-describe('|->Stroke Class', () => {
+describe('|-> Stroke Class', () => {
   it('should instantiate Stroke assigning correct string value', () => {
     const s1 = new Stroke(6)
     expect(s1.value).toEqual('0+')

@@ -1,7 +1,9 @@
 export class Stroke {
+  readonly draw: number
   value: string
 
   constructor(draw: number) {
+    this.draw = draw
     const binary = draw % 2 === 0 ? '0' : '1'
     const change = [6, 9].includes(draw) ? '+' : ''
     this.value = binary + change
