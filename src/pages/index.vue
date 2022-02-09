@@ -48,7 +48,7 @@ export default defineComponent({
 <template>
   <div>
     <p class="text-4xl">
-      <icon-park-outline-chinese class="inline-block text-red-800" />
+      <icon-park-outline-chinese class="inline-block text-red-600" />
     </p>
     <p>Yi-Jing</p>
     <p>
@@ -76,7 +76,7 @@ export default defineComponent({
           </div>
         </div>
         <div v-if="hexagrams.situation" class="flex flex-col justify-center items-center py-6">
-          <p class="text-xs dark:text-gray-200 text-center mb-2">Hexagramme de situation :</p>
+          <p class="font-bold text-md dark:text-red-500 text-center mb-2">Hexagramme de situation :</p>
           <h1 class="text-4xl">{{ hexagrams.situation.chineseName }} {{ hexagrams.situation.pinyinName }}</h1>
           <h1 class="text-2xl dark:text-gray-400">
             {{ t(`hexagrams.desc.${hexagrams.situation.number}`) }}
@@ -84,7 +84,7 @@ export default defineComponent({
           <h3 class="text-lg">{{ hexagrams.situation.number }}</h3>
         </div>
         <div v-if="hexagrams.opposite" class="flex flex-col justify-center items-center py-6">
-          <p class="text-xs dark:text-gray-200 text-center mb-2">Hexagramme opposé :</p>
+          <p class="font-bold text-md dark:text-red-500 text-center mb-2">Hexagramme opposé :</p>
           <h1 class="text-4xl">{{ hexagrams.opposite.chineseName }} {{ hexagrams.opposite.pinyinName }}</h1>
           <h1 class="text-2xl dark:text-gray-400">
             {{ t(`hexagrams.desc.${hexagrams.opposite.number}`) }}
@@ -93,7 +93,7 @@ export default defineComponent({
         </div>
 
         <div v-if="hexagrams.nucleus" class="flex flex-col justify-center items-center py-6">
-          <p class="text-xs dark:text-gray-200 text-center mb-2">Hexagramme nucléaire :</p>
+          <p class="font-bold text-md dark:text-red-500 text-center mb-2">Hexagramme nucléaire :</p>
           <h1 class="text-4xl">{{ hexagrams.nucleus.chineseName }} {{ hexagrams.nucleus.pinyinName }}</h1>
           <h1 class="text-2xl dark:text-gray-400">
             {{ t(`hexagrams.desc.${hexagrams.nucleus.number}`) }}
@@ -102,18 +102,18 @@ export default defineComponent({
         </div>
         <div v-if="trigrams.top && trigrams.bottom" class="flex flex-col md:flex-row">
           <div v-for="type in types" :key="type" class="w-full md:w-1/2">
-            <h4 class="text-lg font-bold">{{ t(`trigrams.${type}.name`) }}</h4>
+            <h4 class="font-bold text-lg dark:text-red-500 font-bold">{{ t(`trigrams.${type}.name`) }}</h4>
             <p>{{ trigrams[type]?.pinyinName }} - {{ trigrams[type]?.chineseName }}</p>
             <p>( {{ trigrams[type]?.number }} )</p>
-            <span class="p-6 block text-justify dark:text-gray-400">{{
+            <span class="p-6 block text-justify dark:text-gray-200">{{
               t(`trigrams.desc.${trigrams[type]?.number}`)
             }}</span>
           </div>
         </div>
         <div v-if="hexagrams.situation" class="flex flex-col">
-          <h4 class="text-lg text-center font-bold w-full mt-6 px-4">{{ t(`envelop.title`) }}</h4>
+          <h4 class="text-lg dark:text-red-500 text-center font-bold w-full mt-6 px-4">{{ t(`envelop.title`) }}</h4>
           <h4 class="text-md dark:text-gray-400">{{ t(`envelop.desc`) }}</h4>
-          <span class="p-6 block text-justify dark:text-gray-400">{{ t(`envelop.values.${envelop}`) }}</span>
+          <span class="p-6 block text-justify dark:text-gray-200">{{ t(`envelop.values.${envelop}`) }}</span>
         </div>
       </div>
     </div>
