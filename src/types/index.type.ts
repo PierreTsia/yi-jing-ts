@@ -20,3 +20,10 @@ export type HexagramRecord = CommonProps & {
   topTrigram: number
   bottomTrigram: number
 }
+
+export enum Envelop {
+  Spring = 'spring',
+  Summer = 'summer',
+  Autumn = 'autumn',
+  Winter = 'winter',
+}

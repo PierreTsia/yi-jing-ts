@@ -1,6 +1,6 @@
 import { trigrams as TRIGRAMS, hexagrams as HEXAGRAMS } from './../data/index'
 import { Stroke } from '~/core/stroke'
-import { HexagramRecord, TrigramRecord } from '~/types/index.type'
+import { Envelop, HexagramRecord, TrigramRecord } from '~/types/index.type'
 
 const ALLOWED_VALUES = [6, 7, 8, 9]
 
@@ -18,6 +18,21 @@ export class YiJing {
     this.init(rolls)
     this.assignTrigrams()
     this.findHexagrams()
+  }
+
+  get envelop(): Envelop | null {
+    if (!this.hexagrams.situation) return null
+    const [bottom, top] = [this.hexagrams.situation.lines[0], this.hexagrams.situation.lines[5]]
+    let result = Envelop.Winter
+    switch (bottom) {
+      case 1:
+        result = top === 0 ? Envelop.Spring : Envelop.Summer
+        break
+      case 0:
+        result = top === 0 ? Envelop.Winter : Envelop.Autumn
+        break
+    }
+    return result
   }
 
   reset() {

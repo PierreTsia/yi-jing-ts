@@ -1,5 +1,6 @@
 import { YiJing } from '~/core/YiJing'
 import { Stroke } from '~/core/stroke'
+import { Envelop } from '~/types/index.type'
 
 describe('|-> Yi Jing class', () => {
   it('should be instantiated with correct params types and length', () => {
@@ -49,6 +50,46 @@ describe('|-> Yi Jing class', () => {
       expect(y.hexagrams.opposite?.number).toEqual(expectedOpposite)
       // 💡 hexagrams binary are lines.reverse()
       expect(y.hexagrams.situation?.binary).toEqual(`${y.trigrams[1].binary}${y.trigrams[0].binary}`)
+    })
+  })
+
+  describe('Envelop', () => {
+    it('should have an envelop property', () => {
+      const y = new YiJing([6, 7, 7, 9, 8, 9])
+      expect(y.envelop).toBeDefined()
+      expect(Object.values(Envelop).includes(y.envelop as never)).toBe(true)
+    })
+
+    it('should return Winter', () => {
+      const y = new YiJing([6, 7, 7, 9, 8, 8])
+      const y2 = new YiJing([8, 7, 7, 9, 8, 6])
+      //trait Yin en 1 et en 6
+      expect(y.envelop).toEqual(Envelop.Winter)
+      expect(y2.envelop).toEqual(Envelop.Winter)
+    })
+
+    it('should return Summer', () => {
+      const y = new YiJing([7, 7, 7, 9, 8, 9])
+      const y2 = new YiJing([9, 7, 7, 9, 8, 7])
+      //trait Yin en 1 et en 6
+      expect(y.envelop).toEqual(Envelop.Summer)
+      expect(y2.envelop).toEqual(Envelop.Summer)
+    })
+
+    it('should return Spring', () => {
+      const y = new YiJing([7, 7, 7, 9, 8, 8])
+      const y2 = new YiJing([9, 7, 7, 9, 8, 6])
+      //trait Yin en 1 et en 6
+      expect(y.envelop).toEqual(Envelop.Spring)
+      expect(y2.envelop).toEqual(Envelop.Spring)
+    })
+
+    it('should return Autumn', () => {
+      const y = new YiJing([6, 7, 7, 9, 8, 9])
+      const y2 = new YiJing([8, 7, 7, 9, 8, 7])
+      //trait Yin en 1 et en 6
+      expect(y.envelop).toEqual(Envelop.Autumn)
+      expect(y2.envelop).toEqual(Envelop.Autumn)
     })
   })
 })
