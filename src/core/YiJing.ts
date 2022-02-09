@@ -132,33 +132,28 @@ export class YiJing {
   }
 
   createNucleusTrigrams(): string[] {
-    return this.strokes
-      .reduce(
-        ([bottom, top], stroke, index) => {
-          switch (index) {
-            case 1:
-              bottom[0] = `${stroke.binary}`
-              break
-            case 2:
-              bottom[1] = `${stroke.binary}`
-              top[0] = `${stroke.binary}`
-              break
-            case 3:
-              bottom[2] = `${stroke.binary}`
-              top[1] = `${stroke.binary}`
-              break
-            case 4:
-              top[2] = `${stroke.binary}`
-              break
-          }
-          return [bottom, top]
-        },
-        [
-          ['', '', ''],
-          ['', '', ''],
-        ]
-      )
-      .map((trigram) => trigram.join(''))
+    return this.strokes.reduce(
+      ([bottom, top], stroke, index) => {
+        switch (index) {
+          case 1:
+            bottom += `${stroke.binary}`
+            break
+          case 2:
+            bottom += `${stroke.binary}`
+            top += `${stroke.binary}`
+            break
+          case 3:
+            bottom += `${stroke.binary}`
+            top += `${stroke.binary}`
+            break
+          case 4:
+            top += `${stroke.binary}`
+            break
+        }
+        return [bottom, top]
+      },
+      ['', '']
+    )
   }
 
   private reverseBinaries(type: 'default' | 'opposite' | 'nucleus') {
@@ -172,7 +167,7 @@ export class YiJing {
         acc[index] += s[prop]
         return acc
       },
-      ['', ''] as [string, string]
+      ['', '']
     )
   }
 }
