@@ -3,8 +3,23 @@ import { Stroke } from '~/core/stroke'
 import { Envelop, HexagramRecord, TrigramRecord } from '~/types/index.type'
 
 const ALLOWED_VALUES = [6, 7, 8, 9]
+const EMPTY_HEXAGRAMS = {
+  situation: null,
+  opposite: null,
+  nucleus: null,
+  perspective: null,
+}
 
-type Hexagrams = { situation: HexagramRecord | null; opposite: HexagramRecord | null; nucleus: HexagramRecord | null }
+type Hexagrams = {
+  situation: HexagramRecord | null
+  opposite: HexagramRecord | null
+  nucleus: HexagramRecord | null
+  perspective: HexagramRecord | null
+}
+
+type RawTrigramsType = 'situation' | 'opposite' | 'nucleus' | 'perspective'
+
+const ALL_HEXAGRAMS_TYPES: RawTrigramsType[] = ['situation', 'opposite', 'nucleus', 'perspective']
 
 export class YiJing {
   draw: number[] = []
@@ -12,13 +27,11 @@ export class YiJing {
   trigrams: TrigramRecord[] = []
   oppositeTrigrams: TrigramRecord[] = []
   nucleusTrigrams: TrigramRecord[] = []
-  hexagrams: Hexagrams = {
-    situation: null,
-    opposite: null,
-    nucleus: null,
-  }
+  perspectiveTrigrams: TrigramRecord[] = []
+  hexagrams: Hexagrams = EMPTY_HEXAGRAMS
 
   constructor(rolls?: number[]) {
+    this.reset()
     this.init(rolls)
     this.assignTrigrams()
     this.findHexagrams()
@@ -45,11 +58,9 @@ export class YiJing {
     this.trigrams = []
     this.oppositeTrigrams = []
     this.nucleusTrigrams = []
-    this.hexagrams = {
-      situation: null,
-      opposite: null,
-      nucleus: null,
-    }
+    this.perspectiveTrigrams = []
+
+    this.hexagrams = EMPTY_HEXAGRAMS
   }
 
   private init(rolls?: number[]): void {
@@ -71,6 +82,9 @@ export class YiJing {
 
     const nucleusTrigramString = this.getRawTrigrams('nucleus')
     this.nucleusTrigrams = nucleusTrigramString.map((tg) => this.findTrigram(tg))
+
+    const perspectiveTrigramString = this.getRawTrigrams('perspective')
+    this.perspectiveTrigrams = perspectiveTrigramString.map((tg) => this.findTrigram(tg))
   }
 
   private findTrigram(tg: string): TrigramRecord {
@@ -84,51 +98,56 @@ export class YiJing {
   }
 
   private findHexagrams(): void {
-    const verbs: Array<'situation' | 'opposite' | 'nucleus'> = ['situation', 'opposite', 'nucleus']
-
-    const [situation, opposite, nucleus] = verbs.map((type) => this.getHexagram(type))
-
-    if (!situation) {
-      throw new Error('No situational hexagram found')
-    }
-    if (!opposite) {
-      throw new Error('No mutating hexagram found')
-    }
-    if (!nucleus) {
-      throw new Error('No nucleus hexagram found')
-    }
-    this.hexagrams = { situation, opposite, nucleus }
+    const [situation, opposite, nucleus, perspective] = ALL_HEXAGRAMS_TYPES.map((type) => this.getHexagram(type))
+    this.hexagrams = { situation, opposite, nucleus, perspective }
   }
 
-  getHexagram(param: 'situation' | 'opposite' | 'nucleus'): HexagramRecord {
+  getHexagram(param: RawTrigramsType): HexagramRecord {
     let trigrams: TrigramRecord[] = [...this.trigrams]
     if (param === 'nucleus') {
       trigrams = [...this.nucleusTrigrams]
-    }
-    if (param === 'opposite') {
+    } else if (param === 'opposite') {
       trigrams = [...this.oppositeTrigrams]
+    } else if (param === 'perspective') {
+      trigrams = [...this.perspectiveTrigrams]
     }
 
     const h = HEXAGRAMS.find(
       (h: HexagramRecord) => h.bottomTrigram === trigrams[0].number && h.topTrigram === trigrams[1].number
     )
     if (!h) {
-      throw new Error(`hexagram not found with lines ${JSON.stringify(this.trigrams)}`)
+      throw new Error(`hexagram not found with lines ${JSON.stringify(trigrams)}`)
     }
     return h
   }
 
-  private getRawTrigrams(type: 'default' | 'opposite' | 'nucleus' = 'default'): string[] {
+  private getRawTrigrams(type: RawTrigramsType = 'situation'): string[] {
     let trigramString: string[] = []
     switch (type) {
       case 'nucleus':
         trigramString = this.createNucleusTrigrams()
+        break
+      case 'perspective':
+        trigramString = this.createPerspectiveTrigrams()
         break
       default:
         trigramString = this.reverseBinaries(type)
         break
     }
     return trigramString
+  }
+  createPerspectiveTrigrams(): string[] {
+    return this.strokes.reduce(
+      ([bottom, top], stroke, index) => {
+        let value = `${stroke.binary}`
+        if (stroke.isYang || stroke.isYing) {
+          value = `${stroke.oppositeBinary}`
+        }
+        index > 2 ? (top += value) : (bottom += value)
+        return [bottom, top]
+      },
+      ['', '']
+    )
   }
 
   createNucleusTrigrams(): string[] {
@@ -156,7 +175,7 @@ export class YiJing {
     )
   }
 
-  private reverseBinaries(type: 'default' | 'opposite' | 'nucleus') {
+  private reverseBinaries(type: 'situation' | 'opposite' | 'nucleus') {
     let prop: 'binary' | 'oppositeBinary' = 'binary'
     return this.strokes.reduce(
       (acc, s, i) => {

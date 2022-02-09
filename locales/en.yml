@@ -45,6 +45,11 @@ trigrams:
     7: LI, la Lumière. Son mouvement s’élève comme celui d’un feu éclairant. Mais comme le feu, il reste attaché à son combustible, Li ne peut s’éloigner ni vraiment se déplacer.
     8: DUI, la Brume. Elle possède un mouvement légèrement ascendant. C’est l’image de l’évaporation. Son déplacement est faible et n’entre jamais en concurrence avec d’autres. Soit il entre en joyeuse communication, soit il risque d’être entrainé ou de se transformer en hésitation.
 hexagrams:
+  type:
+    situation: Hexagramme de situation
+    opposite: Hexagramme opposé
+    perspective: Hexagramme de perspective
+    nucleus: Hexagramme nucléaire
   desc:
     1: ELAN CREATIF - mai/juin
     2: ELAN RECEPTIF - nov./déc

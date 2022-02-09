@@ -63,6 +63,15 @@ describe('|-> Yi Jing class', () => {
       expect(y.hexagrams.nucleus?.number).toEqual(40)
     })
   })
+
+  describe('|-> Perspective Hexagram', () => {
+    it('should have a perspective hexagram', () => {
+      const y = new YiJing([7, 6, 9, 8, 8, 6])
+      expect(y.hexagrams.perspective).toBeDefined()
+      expect(y.hexagrams.situation?.number).toEqual(36)
+      expect(y.hexagrams.perspective?.number).toEqual(41)
+    })
+  })
   describe('|-> Envelop', () => {
     it('should have an envelop property', () => {
       const y = new YiJing([6, 7, 7, 9, 8, 9])
@@ -107,41 +116,43 @@ describe('|-> Yi Jing class', () => {
 describe('|-> Stroke Class', () => {
   it('should instantiate Stroke assigning correct string value', () => {
     const s1 = new Stroke(6)
-    expect(s1.value).toEqual('0+')
+    expect(s1.value).toEqual('0')
     const s2 = new Stroke(7)
     expect(s2.value).toEqual('1')
     const s3 = new Stroke(9)
-    expect(s3.value).toEqual('1+')
+    expect(s3.value).toEqual('1')
     const s4 = new Stroke(8)
     expect(s4.value).toEqual('0')
   })
 
-  it('should have a binary and mutation property', () => {
+  it('should have a binary and opposite property', () => {
     const s1 = new Stroke(6)
     expect(s1.binary).toEqual(0)
-    expect(s1.mutation).toEqual(1)
+    expect(s1.oppositeBinary).toEqual(1)
 
     const s2 = new Stroke(7)
     expect(s2.binary).toEqual(1)
-    expect(s2.mutation).toEqual(1)
+    expect(s2.oppositeBinary).toEqual(0)
 
     const s3 = new Stroke(8)
     expect(s3.binary).toEqual(0)
-    expect(s3.mutation).toEqual(0)
+    expect(s3.oppositeBinary).toEqual(1)
 
     const s4 = new Stroke(9)
     expect(s4.binary).toEqual(1)
-    expect(s4.mutation).toEqual(0)
+    expect(s4.oppositeBinary).toEqual(0)
   })
 
-  it('should have a isMutating boolean property', () => {
+  it('should have a ying / yang boolean property', () => {
     const s1 = new Stroke(6)
-    expect(s1.isMutating).toEqual(true)
+    expect(s1.isYing).toEqual(true)
+    expect(s1.isYang).toEqual(false)
     const s2 = new Stroke(7)
-    expect(s2.isMutating).toEqual(false)
+    expect(s2.isYing).toEqual(false)
+    expect(s2.isYang).toEqual(false)
     const s3 = new Stroke(8)
-    expect(s3.isMutating).toEqual(false)
+    expect(s3.isYang).toEqual(false)
     const s4 = new Stroke(9)
-    expect(s4.isMutating).toEqual(true)
+    expect(s4.isYang).toEqual(true)
   })
 })

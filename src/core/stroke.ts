@@ -4,9 +4,7 @@ export class Stroke {
 
   constructor(draw: number) {
     this.draw = draw
-    const binary = draw % 2 === 0 ? '0' : '1'
-    const change = [6, 9].includes(draw) ? '+' : ''
-    this.value = binary + change
+    this.value = draw % 2 === 0 ? '0' : '1'
   }
 
   get binary() {
@@ -17,11 +15,11 @@ export class Stroke {
     return this.binary === 0 ? 1 : 0
   }
 
-  get isMutating() {
-    return this.value[1] === '+'
+  get isYing() {
+    return this.draw === 6
   }
 
-  get mutation() {
-    return this.isMutating ? this.oppositeBinary : this.binary
+  get isYang() {
+    return this.draw === 9
   }
 }
